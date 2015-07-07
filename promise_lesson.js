@@ -3,15 +3,19 @@ window.lab = {};
 window.lab.logger = console.log.bind(console);
 
 window.lab.reset = function() {
-	window.lab.one = Promise.resolve("Lab one complete.");
-	window.lab.two = Promise.reject("Lab two complete.");
+	window.lab.one = function() {
+		return Promise.resolve("Lab one complete.");
+	};
+	window.lab.two = function() {
+		return Promise.reject("Lab two complete.");
+	};
 	window.lab.three = (function(n) {
 		var arr = [];
 		for(var i = 0; i < n; i++) {
-			arr.push(Promise.resolve("Yep."));
+			arr.push(Promise.resolve(Math.random() * 10));
 		}
 		return arr;
-	})(10);
+	}).bind(null, 10);
 	window.lab.four = (function(n) {
 		var arr = [];
 		for(var i = 0; i < n; i++) {
@@ -23,7 +27,7 @@ window.lab.reset = function() {
 			}));
 		}
 		return arr;
-	})(10);
+	}).bind(null, 10);
 	console.log("Labs reset.");
 };
 
@@ -36,7 +40,8 @@ window.lab.XHR = function(options) {
 	 */
 
 	var method = options.method || 'GET',
-		data = options.data || null;
+		data = options.data || null,
+		url = options.url;
 
 	return new Promise(function(resolve, reject) {
 		if(!url)
