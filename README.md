@@ -19,13 +19,9 @@ Promises are an alternative to using callbacks that allow us to preserve some as
 
 ![alt text](diagram1.png "Anatomy of a Promise")
 
-A Promise is an object that is returned from an asynchronous function. Each Promise has two possible events: resolve and reject.
-
 ### Role of a Promise
 
 ![alt text](diagram2.png "Role of a Promise")
-
-A Promise allows your code to fire event handlers after asynchronous code has completed. It also allows you to fire different event handlers based on whether the Promise resolved successfully or not.
 
 ### Using a promise
 
@@ -48,9 +44,9 @@ if(!window.lab) {
 
 Provide handler signatures.
 
-lab.one contains a canned promise that will resolve. Call its then method with a handler to print its result.
+`lab.one` contains a canned promise that will resolve. Call its then method with a handler to print its result.
 
-lab.two contains a canned promise that will reject. Call its catch method with a handler to print its result.
+`lab.two` contains a canned promise that will reject. Call its catch method with a handler to print its result.
 
 ## Group Activity
 
@@ -78,6 +74,6 @@ Think of it like `async.parallel`. It lets you provide a handler to be called on
 
 ## Labs 3 & 4
 
-Call Promise.all on the array contained in lab.three, then compute the mean of the numeric results.
+Call `Promise.all` on the array contained in `lab.three`, then compute the mean of the numeric results.
 
-Call Promise.race on the array contained in lab.four, then log the numeric result.
+Call `Promise.race` on the array contained in `lab.four`, then log the numeric result.
