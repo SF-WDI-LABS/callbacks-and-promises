@@ -1,7 +1,5 @@
 var labObject = {};
 
-labObject = {};
-
 labObject.logger = console.log.bind(console);
 
 labObject.reset = function() {
