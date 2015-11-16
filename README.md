@@ -171,4 +171,5 @@ Call `Promise.race` on the array contained in `lab.four`, then log the numeric r
 # Further Reading
 
 [Promise on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+
 [We Have a Problem with Promises](http://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html)
