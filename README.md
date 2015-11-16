@@ -21,7 +21,12 @@ Promises are an alternative to directly using callbacks. Promises allow us to wr
 
 ### Role of a Promise
 
-![alt text](diagram2.png "Role of a Promise")
+A promise represents a value that will be available for use in the future, 
+but is not available now. Think of it like an IOU for the actual value. Once
+it **resolves**, it will pass the value it's standing in for to a function you
+provide for it to invoke. Like an IOU, it can also "bounce", or **reject**, and 
+fail to provide the value it's standing in for. Promises also provide a way to 
+deal with this possibility.
 
 ## Using a Promise
 
@@ -162,3 +167,8 @@ It lets you provide a handler to be called once all async functions have finishe
 Call `Promise.all` on the array contained in `lab.three`, then compute the mean of the numeric results.
 
 Call `Promise.race` on the array contained in `lab.four`, then log the numeric result.
+
+# Further Reading
+
+[Promise on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+[We Have a Problem with Promises](http://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html)
