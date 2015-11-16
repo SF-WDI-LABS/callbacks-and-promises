@@ -1,19 +1,19 @@
-# wdi_11_javascript_promises
+# JavaScript Promises
 
-### Introduction
+## Introduction
 
 Welcome to the Promise land! (sorry) You have been sneakily using promises this whole class, but today, we will illuminate what exactly a promise is, and shed light on best practices to use while playing with promises.
 
-### Objectives:
+## Objectives:
 
 * Describe the anatomy of a Promise
 * Utilize Promises to manage asynchronous operations
-* Correctly chain Promises on each other
+* Correctly use a Promise chain
 * Handle errors while working with Promises
 
-### Why Promises?
+## Why Promises?
 
-Promises are an alternative to using callbacks that allow us to preserve some asynchronous functionality in our code. Promises create the illusion of returning values or throwing errors from within our callbacks. Promises do not replace callbacks. Promises depend on callbacks, but provide a layer of abstraction between you and callbacks.
+Promises are an alternative to directly using callbacks. Promises allow us to write asynchronous code that looks like synchronous code. Promises create the illusion of returning values or throwing errors from within our callbacks. While promises do not replace callbacks--promises depend on callbacks--they provide a layer of abstraction between you and callbacks, enabling you to prevent callback hell.
 
 ### Anatomy of a Promise
 
@@ -23,13 +23,51 @@ Promises are an alternative to using callbacks that allow us to preserve some as
 
 ![alt text](diagram2.png "Role of a Promise")
 
-### Using a promise
+## Using a Promise
 
-A Promise takes an anonymous function with two parameters; resolve and reject. These callbacks work much like the `next` and `done` callbacks that we encountered will Express handlers and Async functions respectively. The Promise resolves when `resolve` is called, and is rejected when `reject` is called. These two functions can be named whatever you want them to be named. The first parameter will map to `resolve` and the second parameter will map to `reject`.
+A promise takes an anonymous function with two parameters; `resolve` and `reject`.
+The promise resolves when `resolve` is called, and is rejected when `reject` is 
+called.
 
-### .catch and it's uses
+The value passed to `resolve` will be the argument passed to the resolution 
+handler you register by calling the promise's `then` method. Likewise with the 
+value passed to `reject` and the rejection handler registered by calling 
+the promise's (or a chained promise's) `catch` method.
 
-`.catch` is a method that gets chained onto a Promise object. It is an error handler. It takes one parameter; a function. This function should have one parameter; a placeholder for an error.
+### `Promise.then` and `Promise.catch`
+
+These two methods on every `Promise` object are the primary means of interacting
+with them. This section covers what they have in common.
+
+They can be used the same way. Each takes one argument, a function. Here is a
+usage example featuring an arbitrary promise, `somePromise`:
+
+```js
+somePromise.then(function(resolutionValue) {
+    console.log("somePromise resolved with value " + resolutionValue);
+    doSomethingWith(resolutionValue);
+});
+```
+```js
+somePromise.catch(function(rejectionValue) {
+    console.error(rejectionValue instanceof Error ?
+        rejectionValue :
+        "somePromise rejected with value " + rejectionValue);
+});
+```
+
+#### `.then`
+
+`then` is a method on every `Promise` object. It is used to register an event
+handler for the promise's "resolve" event. When the promise resolves, the handler
+is invoked and passed the value the promise resolved to as its argument.
+
+#### `.catch`
+
+`catch` is a method on every `Promise` object. It is used to register an event
+handler for the promise's "reject" event. When the promise rejects, the handler
+is invoked and passed the value (usually an `Error` object) the promised rejected
+with as its argument.
 
 ## Labs 1 & 2
 
@@ -42,11 +80,9 @@ if(!window.lab) {
 }
 ```
 
-Provide handler signatures.
+`lab.one` contains a pre-made promise that will always resolve. Call its then method with a handler function that prints its result.
 
-`lab.one` contains a canned promise that will resolve. Call its then method with a handler to print its result.
-
-`lab.two` contains a canned promise that will reject. Call its catch method with a handler to print its result.
+`lab.two` contains a pre-made promise that will always reject. Call its catch method with a handler function that prints its result.
 
 ## Group Activity
 
@@ -58,19 +94,75 @@ At least one of each:
 
 ### More `then` and `catch`
 
-Promises allow us to reclaim the `return` and `throw` keywords. We can return a value from our `then` handler, and that value will be used to fulfill the Promise returned by `then`. It will be available as a parameter to the following then handler.
+Promises allow us to reclaim the `return` and `throw` keywords. We can return a value from our `then` handler, and that value will be used to fulfill the promise returned by `then`. It will be available as a parameter to the following then handler.
 
-We can throw errors from our `then` handler, and they will be used to reject the Promise returned by `then`. It will be available as a parameter to the nearest catch handler down the chain.
+We can throw errors from our `then` handler, and they will be used to reject the promise returned by `then`. It will be available as a parameter to the nearest catch handler down the chain.
+
+#### More `then`
+
+There is a little more to `then` that this. It returns a new promise that resolves
+(or rejects) based on whether the upstream promise resolves or rejects, and what
+goes on in its resolution handler. Here is a code demonstration:
+
+```js
+somePromise.then(function(resVal) {
+    console.log("somePromise resolved!");
+
+    if(Math.random() > .5) {
+        return "The promise returned by `then` will now also resolve.";
+    } else {
+        throw new Error("The promise returned by `then` will now reject!");
+    }
+}).then(function(rV) {
+    console.log("The promise returned by the previous call to `then` resolved!");
+});
+```
+
+`Promise.then` returning a new promise is what enables us to build 
+**promise chains**. A chained promise resolves only if its upstream promise
+resolves AND the resolution handler does not throw an error. Otherwise, it
+rejects. This is important to understanding the next section.
+
+#### More `catch`
+
+Like above, there's a little more to `catch`. Since `then` lets us build promise 
+chains, and chained promises reject if their upstream promise rejects, `catch`
+can be used at the end of a promise chain to catch all upstream rejections. Here 
+is a code example:
+
+```js
+somePromise.then(function(rV) {
+    if(Math.random() > .5) {
+        return "Resolve 1!";
+    } else {
+        throw new Error("Reject 1!");
+    }
+}).then(function(resVal) {
+    if(Math.random() > .5) {
+        return "Resolve 2!";
+    } else {
+        throw new Error("Reject 2!");
+    }
+}).then(function(resolutionValue) {
+    if(Math.random() > .5) {
+        return "Resolve 3!";
+    } else {
+        throw new Error("Reject 3!");
+    }
+}).catch(function(err) {
+    console.error(err);
+});
+```
 
 ### Arrays of Promises
 
-A tricky aspect of Promises is iterating over an array of them. Looping doesn't work.
+A tricky aspect of promises is iterating over an array of them. Looping doesn't work.
 
 Enter `Promise.all`.
 
-Think of it like `async.parallel`. It lets you provide a handler to be called once all async functions have finished. `Promise.all` collapses an array of Promises into a single Promise, which resolves once all its constituent Promises have resolved.
+It lets you provide a handler to be called once all async functions have finished. `Promise.all` collapses an array of promises into a single promise, which resolves once all its constituent promises have resolved.
 
-… but what if you're not waiting for them all to finish? `Promise.race` collapses an array of Promises into a Promise as well, but this one resolves once the first constituent Promise resolves.
+… but what if you're not waiting for them all to finish? `Promise.race` collapses an array of promises into a promise as well, but this one resolves once the first constituent promise resolves.
 
 ## Labs 3 & 4
 
