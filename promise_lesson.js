@@ -1,3 +1,5 @@
+'use strict';
+
 var labObject = {};
 
 labObject.logger = console.log.bind(console);
@@ -31,44 +33,6 @@ labObject.reset = function() {
 	console.log("Labs reset.");
 };
 
-labObject.XHR = function(options) {
-	/** DOC
-	 *	Expects `options` object with attributes:
-	 *		- url, a URL
-	 *		- method, an HTTP method
-	 *		- data, raw data to be sent in the request body
-	 */
-
-	var method = options.method || 'GET',
-		data = options.data || null,
-		url = options.url;
-
-	return new Promise(function(resolve, reject) {
-		if(!url)
-			return reject("No URL specified.");
-
-		var xhr = new XMLHttpRequest();
-		xhr.open(method, url, true);
-
-		xhr.addEventListener('load', function(e) {
-			var status = e.target.status;
-
-			if(status >= 400) {
-
-				return reject(e.target.response);
-			}
-
-			resolve(e.target.response);
-		});
-		xhr.addEventListener('error', function(e) {
-			// network-level errors only
-			reject(e.target.error);
-		});
-
-		xhr.send(data);
-	});
-};
-
 labObject.testPromise = function(promise) {
 	// expects a promise containing a string matching a particular regex
 	var pattern = /[A-Za-z]+(\s[A-Za-z]+)+\s?/;
@@ -89,4 +53,4 @@ labObject.testPromise = function(promise) {
 // init
 labObject.reset();
 
-window.lab = labObject;
+module.exports = labObject;
