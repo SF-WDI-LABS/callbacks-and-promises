@@ -71,14 +71,7 @@ with as its argument.
 
 ## Labs 1 & 2
 
-Go to our special web page and open the developer console.
-Test that the page script is loaded with this snippet:
-
-```javascript
-if(!window.lab) {
-  alert('Problem.');
-}
-```
+* Write a JS file for node that `requires` promise_lesson.js
 
 `lab.one` contains a pre-made promise that will always resolve. Call its then method with a handler function that prints its result.
 
