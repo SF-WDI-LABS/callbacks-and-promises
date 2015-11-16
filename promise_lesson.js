@@ -1,22 +1,24 @@
-window.lab = {};
+var labObject = {};
 
-window.lab.logger = console.log.bind(console);
+labObject = {};
 
-window.lab.reset = function() {
-	window.lab.one = function() {
+labObject.logger = console.log.bind(console);
+
+labObject.reset = function() {
+	labObject.one = function() {
 		return Promise.resolve("Lab one complete.");
 	};
-	window.lab.two = function() {
+	labObject.two = function() {
 		return Promise.reject("Lab two complete.");
 	};
-	window.lab.three = (function(n) {
+	labObject.three = (function(n) {
 		var arr = [];
 		for(var i = 0; i < n; i++) {
 			arr.push(Promise.resolve(Math.random() * 10));
 		}
 		return arr;
 	}).bind(null, 10);
-	window.lab.four = (function(n) {
+	labObject.four = (function(n) {
 		var arr = [];
 		for(var i = 0; i < n; i++) {
 			arr.push(new Promise(function(resolve, reject) {
@@ -31,7 +33,7 @@ window.lab.reset = function() {
 	console.log("Labs reset.");
 };
 
-window.lab.XHR = function(options) {
+labObject.XHR = function(options) {
 	/** DOC
 	 *	Expects `options` object with attributes:
 	 *		- url, a URL
@@ -69,7 +71,7 @@ window.lab.XHR = function(options) {
 	});
 };
 
-window.lab.testPromise = function(promise) {
+labObject.testPromise = function(promise) {
 	// expects a promise containing a string matching a particular regex
 	var pattern = /[A-Za-z]+(\s[A-Za-z]+)+\s?/;
 
@@ -87,4 +89,6 @@ window.lab.testPromise = function(promise) {
 };
 
 // init
-window.lab.reset();
+labObject.reset();
+
+window.lab = labObject;
