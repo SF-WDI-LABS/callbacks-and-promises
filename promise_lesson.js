@@ -54,3 +54,4 @@ labObject.testPromise = function(promise) {
 labObject.reset();
 
 module.exports = labObject;
+
