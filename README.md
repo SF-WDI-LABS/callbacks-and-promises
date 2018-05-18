@@ -74,22 +74,6 @@ handler for the promise's "reject" event. When the promise rejects, the handler
 is invoked and passed the value (usually an `Error` object) the promised rejected
 with as its argument.
 
-## Labs 1 & 2
-
-* Write a JS file for node that `requires` promise_lesson.js
-
-`lab.one` contains a pre-made promise that will always resolve. Call its then method with a handler function that prints its result.
-
-`lab.two` contains a pre-made promise that will always reject. Call its catch method with a handler function that prints its result.
-
-## Group Activity
-
-Pair with the person next to you. One of you writes code to create a Promise. The other writes code to operate on the promise.
-
-At least one of each:
-* then
-* catch
-
 ### More `then` and `catch`
 
 Promises allow us to reclaim the `return` and `throw` keywords. We can return a value from our `then` handler, and that value will be used to fulfill the promise returned by `then`. It will be available as a parameter to the following then handler.
@@ -159,14 +143,6 @@ A tricky aspect of promises is iterating over an array of them. Looping doesn't 
 Enter `Promise.all`.
 
 It lets you provide a handler to be called once all async functions have finished. `Promise.all` collapses an array of promises into a single promise, which resolves once all its constituent promises have resolved.
-
-… but what if you're not waiting for them all to finish? `Promise.race` collapses an array of promises into a promise as well, but this one resolves once the first constituent promise resolves.
-
-## Labs 3 & 4
-
-Call `Promise.all` on the array contained in `lab.three`, then compute the mean of the numeric results.
-
-Call `Promise.race` on the array contained in `lab.four`, then log the numeric result.
 
 # Further Reading
 
