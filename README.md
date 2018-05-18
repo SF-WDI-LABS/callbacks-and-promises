@@ -144,6 +144,9 @@ Enter `Promise.all`.
 
 It lets you provide a handler to be called once all async functions have finished. `Promise.all` collapses an array of promises into a single promise, which resolves once all its constituent promises have resolved.
 
+## Lab Time
+Head over to the [Promises Lab](https://github.com/sf-wdi-44/promises-lab) and clone it. 
+
 # Further Reading
 
 [Promise on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
